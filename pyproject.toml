@@ -29,6 +29,9 @@ triton = ["triton; platform_system == 'Linux'"]
 #   localcorr-build cuda|sycl|xpu|all
 localcorr-build = "localcorr.build_native:main"
 
+[project.urls]
+"Source Code" = "https://github.com/hmorimitsu/localcorr"
+
 [tool.setuptools]
 packages = ["localcorr", "localcorr.triton"]
 # The project root is itself the localcorr package directory (the
