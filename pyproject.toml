@@ -1,0 +1,67 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "localcorr"
+version = "0.1.0"
+description = "Local correlation kernels (Triton + CUDA/TensorRT) for optical flow networks"
+readme = "README.md"
+requires-python = ">=3.8"
+# triton publishes Linux-only wheels on PyPI. Where it is unavailable
+# the package still imports (pure-PyTorch and ONNX-export paths); the
+# eager kernels raise a clear ImportError on first use.
+dependencies = [
+    "torch",
+    "triton; platform_system == 'Linux'",
+]
+
+[project.optional-dependencies]
+# Only the redundant triton extra remains, for explicit installs; the
+# platform marker makes it a no-op on non-Linux platforms. TensorRT is
+# deliberately not a dependency: installing it is up to the user and
+# independent of this package.
+triton = ["triton; platform_system == 'Linux'"]
+
+[project.scripts]
+# Build the AOT-compiled components of an installed package from any
+# directory (equivalent to: python -m localcorr.build_native ...):
+#   localcorr-build cuda|sycl|xpu|all
+localcorr-build = "localcorr.build_native:main"
+
+[tool.setuptools]
+packages = ["localcorr", "localcorr.triton"]
+# The project root is itself the localcorr package directory (the
+# sources live directly in localcorr/, not in localcorr/localcorr/),
+# so map the package onto the root; localcorr.triton then resolves to
+# ./triton and the installed layout is still localcorr/ + localcorr/triton/.
+package-dir = { "localcorr" = "." }
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    # Expected while tracing the correlation blocks for ONNX export.
+    "ignore::torch.jit.TracerWarning",
+]
+
+[tool.setuptools.package-data]
+# The native kernel sources (TensorRT plugin, SYCL/OpenVINO and XPU
+# kernels) ship as data of the localcorr package, so they can be built
+# on demand from an installed wheel or a checkout alike:
+#   python -m localcorr.build_native cuda   # or: sycl, xpu, all
+# Note: paths are relative to the package dir (the project root, see
+# package-dir above).
+"localcorr" = [
+    "cuda_pyramid/*.h",
+    "cuda_pyramid/*.cu",
+    "cuda_pyramid/*.cpp",
+    "cuda_pyramid/CMakeLists.txt",
+    "cuda_pyramid/build.sh",
+    "sycl_pyramid/*.h",
+    "sycl_pyramid/*.cpp",
+    "sycl_pyramid/*.py",
+    "sycl_pyramid/build.sh",
+    "xpu/*.h",
+    "xpu/*.cpp",
+    "xpu/setup.py",
+    "xpu/build.sh",
+]

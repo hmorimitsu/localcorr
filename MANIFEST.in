@@ -1,0 +1,21 @@
+# Sources for the sdist: the Python package files are included
+# automatically; MANIFEST.in adds the native kernel sources so the
+# TensorRT plugin and the SYCL/XPU kernels can be built from a source
+# distribution (they also ship in the wheel via package-data).
+# NOTE: paths are relative to the project root, which is itself the
+# localcorr package directory (see package-dir in pyproject.toml).
+include README.md
+
+recursive-include cuda_pyramid *.h *.cu *.cpp build.sh CMakeLists.txt
+recursive-include sycl_pyramid *.h *.cpp *.py build.sh
+recursive-include xpu *.h *.cpp *.py build.sh
+
+# Unit tests (kept out of the wheel; useful when testing the sdist).
+recursive-include tests *.py
+
+# Never ship build artifacts or caches.
+global-exclude *.pyc
+prune cuda_pyramid/build
+prune sycl_pyramid/build
+prune xpu/build
+prune __pycache__
