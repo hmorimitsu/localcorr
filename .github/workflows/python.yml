@@ -30,6 +30,10 @@ jobs:
           pip install torch==2.14.1 torchvision==0.29.1 --index-url https://download.pytorch.org/whl/cpu
           pip install .
       - name: Test with pytest
+        # Plain pytest (not `python -m pytest`): `python -m` would prepend
+        # the checkout to sys.path, where the localcorr.triton sources
+        # (triton/) shadow the installed triton package and every triton
+        # import fails. See tests/conftest.py.
         run: |
           pip install pytest==9.0.2
-          python -m pytest tests/
+          pytest tests/

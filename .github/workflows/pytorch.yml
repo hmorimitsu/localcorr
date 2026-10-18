@@ -39,6 +39,10 @@ jobs:
           pip install ${{ matrix.pytorch }}
           pip install .
       - name: Test with pytest
+        # Plain pytest (not `python -m pytest`): `python -m` would prepend
+        # the checkout to sys.path, where the localcorr.triton sources
+        # (triton/) shadow the installed triton package and every triton
+        # import fails. See tests/conftest.py.
         run: |
           pip install pytest==9.0.2
-          python -m pytest tests/
+          pytest tests/
