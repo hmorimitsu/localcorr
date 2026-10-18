@@ -1,5 +1,9 @@
 # localcorr
 
+![GitHub CI python status](https://github.com/hmorimitsu/localcorr/actions/workflows/python.yml/badge.svg)
+![GitHub CI pytorch status](https://github.com/hmorimitsu/localcorr/actions/workflows/pytorch.yml/badge.svg)
+![GitHub CI build status](https://github.com/hmorimitsu/localcorr/actions/workflows/build.yml/badge.svg)
+
 PyTorch local correlation kernels for optical flow networks such as
 [RAFT](https://github.com/princeton-vl/RAFT/) and
 [PWC-Net](https://github.com/NVlabs/PWC-Net).
