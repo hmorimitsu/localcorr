@@ -84,7 +84,7 @@ except (ImportError, OSError):
     TritonSpatialCorrelationFunction = None
     TritonSpatialCorrelationSampler = None
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 __all__ = [
     "get_localcorr_block",

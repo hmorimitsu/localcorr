@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "localcorr"
-version = "0.1.0"
+version = "0.1.1"
 description = "Local correlation kernels (Triton + CUDA/TensorRT) for optical flow networks"
 readme = "README.md"
 requires-python = ">=3.8"
